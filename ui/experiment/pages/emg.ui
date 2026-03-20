@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EmgPage</class>
+ <widget class="QWidget" name="EmgPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <!-- Tab bar -->
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true">QTabWidget::pane {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: white;
+    border-top-left-radius: 0px;
+}
+QTabBar::tab {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 24px;
+    border: 1px solid #CCCCCC;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background: #E8E8E8;
+    color: #555555;
+    margin-right: 2px;
+}
+QTabBar::tab:selected {
+    background: white;
+    color: #333333;
+    border-bottom: 1px solid white;
+}
+QTabBar::tab:hover:!selected {
+    background: #F0F0F0;
+}</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <!-- Tab 1: Indicaciones de uso -->
+     <widget class="QWidget" name="tabInstructions">
+      <attribute name="title">
+       <string>Indicaciones de uso</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayoutTab1">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="frameImage">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <layout class="QVBoxLayout" name="layoutImage">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblEmgImage">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <!-- Tab 2: Selección de sensores -->
+     <widget class="QWidget" name="tabSensors">
+      <attribute name="title">
+       <string>Selección de sensores</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayoutTab2">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
+       <!-- Left: Chart + controls (65%) -->
+       <item>
+        <widget class="QFrame" name="frameLeft">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>65</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame#frameLeft {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: #FAFAFA;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::Box</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayoutLeft">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+           <!-- Label: Seleccione sensores -->
+           <item>
+            <widget class="QLabel" name="lblSelectSensor">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+}</string>
+             </property>
+             <property name="text">
+              <string>Seleccione sensores:</string>
+             </property>
+            </widget>
+           </item>
+           <!-- 6 Checkboxes en grilla 3x2 -->
+           <item>
+            <layout class="QGridLayout" name="gridCheckboxes">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="chkSensor1">
+               <property name="text">
+                <string>Sensor_1</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="chkSensor2">
+               <property name="text">
+                <string>Sensor_2</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="chkSensor3">
+               <property name="text">
+                <string>Sensor_3</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="chkSensor4">
+               <property name="text">
+                <string>Sensor_4</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="chkSensor5">
+               <property name="text">
+                <string>Sensor_5</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QCheckBox" name="chkSensor6">
+               <property name="text">
+                <string>Sensor_6</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QCheckBox { font-size:14px; font-weight:bold; color:#333; spacing:8px; }
+QCheckBox::indicator { width:22px; height:22px; border-radius:4px; border:2px solid #CCC; background:#FFF; }
+QCheckBox::indicator:hover { border-color:#4CAF50; }
+QCheckBox::indicator:checked { background:#4CAF50; border-color:#4CAF50; }</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <!-- Botones: Probar + Agregar -->
+           <item>
+            <layout class="QHBoxLayout" name="layoutBtnTest">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btnTestSensor">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>44</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #43A047;
+}
+QPushButton:pressed {
+    background-color: #388E3C;
+}</string>
+               </property>
+               <property name="text">
+                <string>Probar sensores seleccionados</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAddSensor">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>44</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #43A047;
+}
+QPushButton:pressed {
+    background-color: #388E3C;
+}</string>
+               </property>
+               <property name="text">
+                <string>Agregar sensores seleccionados</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <!-- Chart container -->
+           <item>
+            <widget class="QWidget" name="chartContainer" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+         </layout>
+        </widget>
+       </item>
+       <!-- Right: Selected sensors table (35%) -->
+       <item>
+        <widget class="QFrame" name="frameRight">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>35</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame#frameRight {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: #FAFAFA;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::Box</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayoutRight">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <!-- Title -->
+          <item>
+           <widget class="QLabel" name="lblSelectedTitle">
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333333;
+}</string>
+            </property>
+            <property name="text">
+             <string>Sensores seleccionados:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <!-- Scroll area for sensor list -->
+          <item>
+           <widget class="QScrollArea" name="scrollSensors">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QScrollArea {
+    border: none;
+}
+QScrollBar:vertical {
+    width: 8px;
+    background: #F0F0F0;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical {
+    background: #BBBBBB;
+    border-radius: 4px;
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}</string>
+            </property>
+            <widget class="QWidget" name="scrollContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>200</width>
+               <height>300</height>
+              </rect>
+             </property>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

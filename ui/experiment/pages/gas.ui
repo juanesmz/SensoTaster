@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GasPage</class>
+ <widget class="QWidget" name="GasPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>550</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="spacing">
+    <number>12</number>
+   </property>
+   <property name="leftMargin">
+    <number>15</number>
+   </property>
+   <property name="topMargin">
+    <number>15</number>
+   </property>
+   <property name="rightMargin">
+    <number>15</number>
+   </property>
+   <property name="bottomMargin">
+    <number>15</number>
+   </property>
+   <!-- Main content: left frame + right frames -->
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutContent">
+     <property name="spacing">
+      <number>15</number>
+     </property>
+     <!-- Left Frame: PCB selection + save + add sensor + notes -->
+     <item>
+      <widget class="QFrame" name="frameLeft">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>350</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::Box</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutLeft">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="leftMargin">
+         <number>14</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>14</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <!-- Escoger PCB label -->
+        <item>
+         <widget class="QLabel" name="lblPcb">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+}</string>
+          </property>
+          <property name="text">
+           <string>Escoger PCB:</string>
+          </property>
+         </widget>
+        </item>
+        <!-- PCB ComboBox -->
+        <item>
+         <widget class="QComboBox" name="cmbPcb">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>36</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QComboBox {
+    font-size: 12px;
+    padding: 4px 8px;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    color: #333333;
+}
+QComboBox:hover {
+    border-color: #4CAF50;
+}
+QComboBox::drop-down {
+    border: none;
+    width: 22px;
+}
+QComboBox QAbstractItemView {
+    font-size: 11px;
+    selection-background-color: #E8F5E9;
+    selection-color: #2E7D32;
+}</string>
+          </property>
+         </widget>
+        </item>
+        <!-- Guardar configuración (moved here from bottom bar) -->
+        <item>
+         <widget class="QPushButton" name="btnSaveConfig">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 20px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #43A047;
+}
+QPushButton:pressed {
+    background-color: #388E3C;
+}</string>
+          </property>
+          <property name="text">
+           <string>Guardar configuración</string>
+          </property>
+         </widget>
+        </item>
+        <!-- Editar PCB -->
+        <item>
+         <widget class="QPushButton" name="btnEditPcb">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 20px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #43A047;
+}
+QPushButton:pressed {
+    background-color: #388E3C;
+}
+QPushButton:disabled {
+    background-color: #A5D6A7;
+    color: #E0E0E0;
+}</string>
+          </property>
+          <property name="text">
+           <string>Editar PCB</string>
+          </property>
+         </widget>
+        </item>
+        <!-- Separator -->
+        <item>
+         <widget class="QFrame" name="separatorLine">
+          <property name="frameShape">
+           <enum>QFrame::Shape::HLine</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+         </widget>
+        </item>
+        <!-- Lista de sensores de gas -->
+        <item>
+         <widget class="QLabel" name="lblSensorListTitle">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+}</string>
+          </property>
+          <property name="text">
+           <string>Lista de sensores de gas:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QScrollArea" name="scrollSensorList">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QScrollArea {
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+}
+QScrollBar:vertical {
+    width: 8px;
+    background: #F0F0F0;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical {
+    background: #BBBBBB;
+    border-radius: 4px;
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}</string>
+          </property>
+          <widget class="QWidget" name="scrollSensorContent">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>200</width>
+             <height>100</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <!-- Agregar nuevo sensor button -->
+        <item>
+         <widget class="QPushButton" name="btnAddSensor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 8px 10px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #43A047;
+}
+QPushButton:pressed {
+    background-color: #388E3C;
+}</string>
+          </property>
+          <property name="text">
+           <string>Agregar nuevo sensor</string>
+          </property>
+         </widget>
+        </item>
+        <!-- Spacer -->
+        <item>
+         <spacer name="verticalSpacerLeft">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <!-- Notes -->
+        <item>
+         <widget class="QLabel" name="lblNotes">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+    font-size: 11px;
+    color: #666666;
+    font-style: italic;
+}</string>
+          </property>
+          <property name="text">
+           <string>*En la tarjeta están numeradas las posiciones.
+*Si una posición no tiene sensor, escriba 'NA'</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <!-- Right side: Table frame (top) + Buttons frame (bottom) -->
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayoutRightSide">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <!-- Upper Right: Table -->
+       <item>
+        <widget class="QFrame" name="frameRight">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>2</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::Box</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayoutRight">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollAreaTable">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QScrollArea {
+    border: none;
+}
+QScrollBar:vertical {
+    width: 10px;
+    background: #F0F0F0;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical {
+    background: #BBBBBB;
+    border-radius: 5px;
+    min-height: 30px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #999999;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}</string>
+            </property>
+            <widget class="QWidget" name="scrollContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>400</width>
+               <height>300</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayoutScroll">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QWidget" name="tableContainer" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <!-- Lower Right: Add/Remove row buttons -->
+       <item>
+        <widget class="QFrame" name="frameButtons">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame#frameButtons {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: #FAFAFA;
+}</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::Box</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayoutButtons">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>12</number>
+          </property>
+          <property name="topMargin">
+           <number>8</number>
+          </property>
+          <property name="rightMargin">
+           <number>12</number>
+          </property>
+          <property name="bottomMargin">
+           <number>8</number>
+          </property>
+          <item>
+           <spacer name="hSpacerBtnLeft">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <!-- Add row button + label -->
+          <item>
+           <widget class="QPushButton" name="btnAddRow">
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>Agregar casilla</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    color: #4CAF50;
+}
+QPushButton:hover {
+    border-color: #4CAF50;
+    background-color: #E8F5E9;
+}
+QPushButton:pressed {
+    background-color: #C8E6C9;
+}</string>
+            </property>
+            <property name="text">
+             <string>+</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblAddRow">
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555555;
+}</string>
+            </property>
+            <property name="text">
+             <string>Agregar fila</string>
+            </property>
+           </widget>
+          </item>
+          <!-- Spacer between groups -->
+          <item>
+           <spacer name="hSpacerBtnMid">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Policy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>30</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <!-- Remove row label + button -->
+          <item>
+           <widget class="QLabel" name="lblRemoveRow">
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555555;
+}</string>
+            </property>
+            <property name="text">
+             <string>Remover última fila</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnRemoveRow">
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>40</width>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>Quitar última casilla</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    font-size: 18px;
+    font-weight: bold;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    color: #E53935;
+}
+QPushButton:hover {
+    border-color: #E53935;
+    background-color: #FFEBEE;
+}
+QPushButton:pressed {
+    background-color: #FFCDD2;
+}</string>
+            </property>
+            <property name="text">
+             <string>−</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="hSpacerBtnRight">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
