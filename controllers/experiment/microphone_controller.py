@@ -29,7 +29,6 @@ from PySide6.QtWidgets import (
 # ── Parámetros de captura ─────────────────────────────────────────────────────
 SAMPLE_RATE    = 44100   # Hz
 BLOCK_SIZE     = 2048    # muestras por bloque → ~46 ms
-CHANNELS       = 1       # mono
 # ─────────────────────────────────────────────────────────────────────────────
 
 
@@ -42,9 +41,12 @@ class _AudioWorker(QThread):
 
     chunk_ready = Signal(object)   # emite np.ndarray float32
 
-    def __init__(self, device_index: int, parent=None):
+    def __init__(self, device_index: int, channel: int = 0,
+                 num_channels: int = 1, parent=None):
         super().__init__(parent)
         self.device_index = device_index
+        self._channel = channel        # canal a extraer (0-based)
+        self._num_channels = num_channels  # canales a abrir en el stream
         self._running = False
 
     def run(self):
@@ -52,7 +54,7 @@ class _AudioWorker(QThread):
         try:
             stream = sd.InputStream(
                 device=self.device_index,
-                channels=CHANNELS,
+                channels=self._num_channels,
                 samplerate=SAMPLE_RATE,
                 blocksize=BLOCK_SIZE,
                 dtype="float32",
@@ -61,8 +63,8 @@ class _AudioWorker(QThread):
             while self._running:
                 data, overflowed = stream.read(BLOCK_SIZE)
                 if self._running and not overflowed:
-                    # data shape: (BLOCK_SIZE, 1) → aplanar a (BLOCK_SIZE,)
-                    self.chunk_ready.emit(data[:, 0].copy())
+                    # data shape: (BLOCK_SIZE, num_channels) → extraer canal
+                    self.chunk_ready.emit(data[:, self._channel].copy())
             stream.stop()
             stream.close()
         except Exception as e:
@@ -129,7 +131,8 @@ class MicrophoneController(QObject):
 
         for idx, dev in enumerate(sd.query_devices()):
             # Solo dispositivos de entrada
-            if dev["max_input_channels"] <= 0:
+            max_ch = dev["max_input_channels"]
+            if max_ch <= 0:
                 continue
 
             # Solo de la hostapi por defecto (evita duplicados MME/WASAPI/DS)
@@ -141,9 +144,26 @@ class MicrophoneController(QObject):
             if any(kw in name_lower for kw in virtual_keywords):
                 continue
 
-            label = dev["name"]
-            cmb.addItem(label)
-            self._input_devices.append({"name": label, "index": idx})
+            if max_ch >= 2:
+                # Separar en entradas individuales por canal
+                for ch in range(max_ch):
+                    label = f"{dev['name']} (Canal {ch + 1})"
+                    cmb.addItem(label)
+                    self._input_devices.append({
+                        "name": label,
+                        "index": idx,
+                        "channel": ch,
+                        "num_channels": max_ch,
+                    })
+            else:
+                label = dev["name"]
+                cmb.addItem(label)
+                self._input_devices.append({
+                    "name": label,
+                    "index": idx,
+                    "channel": 0,
+                    "num_channels": 1,
+                })
 
     # ------------------------------------------------------------------ #
     #  Tabla de micrófonos                                                 #
@@ -162,7 +182,8 @@ class MicrophoneController(QObject):
         table.verticalHeader().setVisible(False)
         table.setRowCount(0)
 
-    def _add_row(self, name: str, device_index: int):
+    def _add_row(self, name: str, device_index: int, *,
+                 channel: int = 0, num_channels: int = 1):
         """Añade una fila a la tabla con el nombre del micrófono y botón de borrado."""
         table: QTableWidget = self._find(QTableWidget, "tableMicList")
         if table is None:
@@ -195,7 +216,12 @@ class MicrophoneController(QObject):
         table.setCellWidget(row, 1, btn_delete)
 
         # Guardar en la lista interna
-        self._mic_list.append({"name": name, "device_index": device_index})
+        self._mic_list.append({
+            "name": name,
+            "device_index": device_index,
+            "channel": channel,
+            "num_channels": num_channels,
+        })
 
     def _delete_row(self, row: int):
         """Elimina la fila indicada y ajusta los índices de los botones restantes."""
@@ -267,12 +293,15 @@ class MicrophoneController(QObject):
 
         dev = self._input_devices[idx_combo]
 
-        # Evitar duplicados
+        # Evitar duplicados (mismo dispositivo + mismo canal)
         for mic in self._mic_list:
-            if mic["device_index"] == dev["index"]:
+            if (mic["device_index"] == dev["index"]
+                    and mic.get("channel", 0) == dev.get("channel", 0)):
                 return
 
-        self._add_row(dev["name"], dev["index"])
+        self._add_row(dev["name"], dev["index"],
+                      channel=dev.get("channel", 0),
+                      num_channels=dev.get("num_channels", 1))
 
     @Slot(bool)
     def _on_view_toggled(self, checked: bool):
@@ -282,10 +311,15 @@ class MicrophoneController(QObject):
         if checked:
             # Tomar el dispositivo directamente del dropdown (cmbMicrophone)
             device_index = -1
+            channel = 0
+            num_channels = 1
             if cmb and self._input_devices:
                 idx_combo = cmb.currentIndex()
                 if 0 <= idx_combo < len(self._input_devices):
-                    device_index = self._input_devices[idx_combo]["index"]
+                    dev = self._input_devices[idx_combo]
+                    device_index = dev["index"]
+                    channel = dev.get("channel", 0)
+                    num_channels = dev.get("num_channels", 1)
 
             if device_index == -1:
                 # No hay dispositivo seleccionado → desmarcar el botón
@@ -293,7 +327,8 @@ class MicrophoneController(QObject):
                     btn_view.setChecked(False)
                 return
 
-            self._start_monitoring(device_index)
+            self._start_monitoring(device_index, channel=channel,
+                                   num_channels=num_channels)
             if btn_view:
                 btn_view.setText("⏹  Detener")
             if cmb:
@@ -310,10 +345,12 @@ class MicrophoneController(QObject):
     #  Captura de audio                                                    #
     # ------------------------------------------------------------------ #
 
-    def _start_monitoring(self, device_index: int):
+    def _start_monitoring(self, device_index: int, *,
+                          channel: int = 0, num_channels: int = 1):
         self._stop_monitoring()
         self._monitoring_device = device_index
-        self._worker = _AudioWorker(device_index)
+        self._worker = _AudioWorker(device_index, channel=channel,
+                                    num_channels=num_channels)
         self._worker.chunk_ready.connect(self._on_audio_chunk, Qt.QueuedConnection)
         self._worker.start()
 
@@ -342,3 +379,12 @@ class MicrophoneController(QObject):
         if self.view and self.view.ui:
             return self.view.ui.findChild(widget_type, name)
         return None
+
+    @property
+    def num_selected_microphones(self) -> int:
+        """Devuelve la cantidad de micrófonos agregados en la tabla."""
+        return len(self._mic_list)
+
+    def get_microphone_list(self) -> list[dict]:
+        """Devuelve la copia de la lista de micrófonos configurados."""
+        return list(self._mic_list)

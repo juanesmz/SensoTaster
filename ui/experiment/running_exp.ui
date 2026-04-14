@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RunningExpPage</class>
+ <widget class="QWidget" name="RunningExpPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Ejecución del Experimento</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#RunningExpPage {
+    background-color: white;
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayoutButtons">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QPushButton" name="btnStopUser1">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QPushButton" name="btnStopUser2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="btnStopUser3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 3</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="btnStopUser4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 4</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="btnStopUser5">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 5</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="btnStopUser6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color: #F44336;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid #D32F2F;
+}
+QPushButton:hover {
+    background-color: #EF5350;
+}
+QPushButton:pressed {
+    background-color: #C62828;
+}</string>
+     </property>
+     <property name="text">
+      <string>Detener captura de usuario 6</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

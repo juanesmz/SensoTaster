@@ -15,8 +15,12 @@ Responsabilidades:
 
 from PySide6.QtCore import QObject, QTimer
 from PySide6.QtWidgets import QLineEdit, QPushButton, QMessageBox
+from env_config import ENV
 
-LABJACK_SERIAL = 470026166
+
+def _labjack_serial() -> int:
+    """Reads LABJACK_SERIAL from the .env at call time (respects live changes)."""
+    return int(ENV.get("LABJACK_SERIAL", "470026166"))
 
 
 class CleaningController(QObject):
@@ -25,6 +29,7 @@ class CleaningController(QObject):
         self.view = view
         self._handle = None  # handle de conexión LabJack
         self._remaining_seconds = 0
+        self.cleaning_completed = False
 
         # ── Referencias a widgets ──────────────────────────────────
         ui = self.view.ui
@@ -114,6 +119,7 @@ class CleaningController(QObject):
         """Pone FIO0/FIO1 en bajo, cierra conexión, restaura UI."""
         self._set_fio_low()
         self._disconnect_labjack()
+        self.cleaning_completed = True
 
         # Restaurar UI
         self._input_time.setReadOnly(False)
@@ -131,14 +137,16 @@ class CleaningController(QObject):
         """Abre conexión USB con el LabJack T7 por número de serie."""
         try:
             import labjack.ljm as ljm
-            self._handle = ljm.openS("T7", "USB", str(LABJACK_SERIAL))
+            serial_num = _labjack_serial()
+            self._handle = ljm.openS("T7", "USB", str(serial_num))
             info = ljm.getHandleInfo(self._handle)
             print(f"LabJack T7 conectado – Serial: {info[2]}")
             return True
         except Exception as e:
+            serial_num = _labjack_serial()
             QMessageBox.critical(
                 self.view, "Error de conexión",
-                f"No se pudo conectar al LabJack T7 (serial {LABJACK_SERIAL}).\n\n"
+                f"No se pudo conectar al LabJack T7 (serial {serial_num}).\n\n"
                 f"Error: {e}",
             )
             self._handle = None

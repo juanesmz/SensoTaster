@@ -158,131 +158,171 @@ QPushButton:hover {
    </item>
    <item>
     <widget class="QWidget" name="bodyWidget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayoutBody">
-      <property name="spacing">
-       <number>50</number>
-      </property>
-      <property name="leftMargin">
-       <number>100</number>
-      </property>
-      <property name="topMargin">
-       <number>50</number>
-      </property>
-      <property name="rightMargin">
-       <number>100</number>
-      </property>
-      <property name="bottomMargin">
-       <number>50</number>
-      </property>
-      <item>
-       <widget class="QToolButton" name="btnExperiment">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../../resources/images/ExpModule.png</normaloff>../../resources/images/ExpModule.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>350</width>
-          <height>350</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton {
-    border: none;
-    background-color: transparent;
-}
-QToolButton:hover {
-    background-color: rgba(0, 31, 91, 0.1); 
-    border-radius: 20px;
-}</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="btnVisualization">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../../resources/images/VerData.png</normaloff>../../resources/images/VerData.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>350</width>
-          <height>350</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton {
-    border: none;
-    background-color: transparent;
-}
-QToolButton:hover {
-    background-color: rgba(0, 31, 91, 0.1); 
-    border-radius: 20px;
-}</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="btnAnalysis">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../../resources/images/DataAnali.png</normaloff>../../resources/images/DataAnali.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>350</width>
-          <height>350</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QToolButton {
-    border: none;
-    background-color: transparent;
-}
-QToolButton:hover {
-    background-color: rgba(0, 31, 91, 0.1); 
-    border-radius: 20px;
-}</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <layout class="QGridLayout" name="gridLayoutBody">
+       <property name="spacing">
+        <number>40</number>
+       </property>
+       <property name="leftMargin">
+        <number>80</number>
+       </property>
+       <property name="topMargin">
+        <number>40</number>
+       </property>
+       <property name="rightMargin">
+        <number>80</number>
+       </property>
+       <property name="bottomMargin">
+        <number>40</number>
+       </property>
+        <item row="0" column="0">
+         <widget class="QToolButton" name="btnSettings">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonIconOnly</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../resources/images/settings.png</normaloff>../../resources/images/settings.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton {\n    background-color: #1A3A6B;\n    border: none;\n    border-radius: 20px;\n    padding: 0px;\n}\nQToolButton:hover {\n    background-color: #254E8A;\n    border: none;\n}\nQToolButton:pressed {\n    background-color: #0D2247;\n}</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QToolButton" name="btnExperiment">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonIconOnly</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../resources/images/ExpModule.png</normaloff>../../resources/images/ExpModule.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton {\n    background-color: #1A3A6B;\n    border: none;\n    border-radius: 20px;\n    padding: 0px;\n}\nQToolButton:hover {\n    background-color: #254E8A;\n    border: none;\n}\nQToolButton:pressed {\n    background-color: #0D2247;\n}</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QToolButton" name="btnVisualization">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonIconOnly</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../resources/images/VerData.png</normaloff>../../resources/images/VerData.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton {\n    background-color: #1A3A6B;\n    border: none;\n    border-radius: 20px;\n    padding: 0px;\n}\nQToolButton:hover {\n    background-color: #254E8A;\n    border: none;\n}\nQToolButton:pressed {\n    background-color: #0D2247;\n}</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QToolButton" name="btnAnalysis">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonIconOnly</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>13</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../resources/images/DataAnali.png</normaloff>../../resources/images/DataAnali.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton {\n    background-color: #1A3A6B;\n    border: none;\n    border-radius: 20px;\n    padding: 0px;\n}\nQToolButton:hover {\n    background-color: #254E8A;\n    border: none;\n}\nQToolButton:pressed {\n    background-color: #0D2247;\n}</string>
+          </property>
+         </widget>
+        </item>
+      </layout>
     </widget>
    </item>
   </layout>

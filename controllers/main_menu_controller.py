@@ -10,4 +10,5 @@ class MainMenuController(QObject):
         self.view.ui.btnExperiment.clicked.connect(lambda: router.go_to("experiment"))
         self.view.ui.btnVisualization.clicked.connect(lambda: router.go_to("visualization"))
         self.view.ui.btnAnalysis.clicked.connect(lambda: router.go_to("analysis"))
+        self.view.ui.btnSettings.clicked.connect(lambda: router.go_to("settings"))
         self.view.ui.btnReturn.clicked.connect(lambda: router.go_to("login"))

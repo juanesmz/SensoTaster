@@ -314,3 +314,7 @@ class GasController(QObject):
         # Refrescar combos de la tabla (conservando selecciones válidas)
         self.view.populate_sensor_combos(self._sensors)
 
+    def get_gas_config(self) -> list[tuple[str, str]]:
+        """Devuelve la configuración actual (Sensor #, Referencia)."""
+        return self.view.get_row_data()
+

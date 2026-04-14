@@ -157,16 +157,150 @@ QPushButton:hover {
     </widget>
    </item>
    <item>
+    <widget class="QWidget" name="directorySelectionWidget" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget#directorySelectionWidget {
+    background-color: #F5F5F5;
+    border-bottom: 2px solid #001F5B;
+}
+QLabel {
+    color: #001F5B;
+    font-weight: bold;
+    font-size: 14px;
+}
+QLineEdit {
+    padding: 8px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    background: white;
+    font-size: 13px;
+}
+QPushButton#btnBrowse {
+    background-color: #001F5B;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-weight: bold;
+}
+QPushButton#btnBrowse:hover {
+    background-color: #003399;
+}</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayoutDirectory">
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lblDirectory">
+        <property name="text">
+         <string>Directorio de Experimentación:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineDirectory">
+        <property name="placeholderText">
+         <string>Seleccione la carpeta de resultados...</string>
+        </property>
+        <property name="readOnly">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnBrowse">
+        <property name="text">
+         <string>Buscar...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QWidget" name="bodyWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayoutBody">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
       <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Visualization Placeholder</string>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="styleSheet">
+         <string notr="true">QTabWidget::pane {
+    border: 1px solid #001F5B;
+    top: -1px;
+    background: white;
+    border-radius: 5px;
+}
+QTabBar::tab {
+    background: #E5E5E5;
+    border: 1px solid #C4C4C4;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 12px 24px;
+    min-width: 180px;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #001F5B;
+    margin-right: 4px;
+}
+QTabBar::tab:selected {
+    background: #001F5B;
+    color: white;
+    border-bottom-color: #001F5B;
+}
+QTabBar::tab:hover:!selected {
+    background: #D0D0D0;
+}</string>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
+        <property name="currentIndex">
+         <number>0</number>
         </property>
+        <widget class="QWidget" name="tabGas">
+         <attribute name="title">
+          <string>Sensores Gases</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayoutGas"/>
+        </widget>
+        <widget class="QWidget" name="tabImaging">
+         <attribute name="title">
+          <string>Imagen</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayoutImaging"/>
+        </widget>
+        <widget class="QWidget" name="tabAudio">
+         <attribute name="title">
+          <string>Audio</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayoutAudio"/>
+        </widget>
+        <widget class="QWidget" name="tabEMG">
+         <attribute name="title">
+          <string>Electromiografía</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayoutEMG"/>
+        </widget>
        </widget>
       </item>
      </layout>

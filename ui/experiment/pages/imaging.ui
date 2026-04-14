@@ -6,21 +6,394 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>900</width>
+    <height>600</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <property name="styleSheet">
+   <string notr="true">
+QWidget {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #333;
+}
+QFrame#frameRight, QGroupBox#groupBoxROI {
+    background-color: #E2E8F0;
+    border: 2px solid #CBD5E1;
+    border-radius: 8px;
+}
+QFrame#frameImage {
+    background-color: #000000;
+    border: 6px solid #1E3A5F;
+    border-radius: 4px;
+}
+QLabel#lblSectionTitle {
+    font-size: 14pt;
+    font-weight: bold;
+    color: #1E3A5F;
+}
+QPushButton {
+    background-color: #0284C7;
+    color: white;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #0369A1;
+}
+QPushButton:checked {
+    background-color: #DC2626;
+}
+QSpinBox {
+    background-color: white;
+    border: 1px solid #94A3B8;
+    border-radius: 4px;
+    padding: 2px;
+}
+QComboBox {
+    background-color: #F1F5F9;
+    border: 1px solid #94A3B8;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 11pt;
+}
+QCheckBox {
+    font-size: 11pt;
+}
+   </string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayoutMaster" stretch="2,1">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+
+   <!-- Left Side -->
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Imaging Page</string>
+    <layout class="QVBoxLayout" name="verticalLayoutLeft">
+     <property name="spacing">
+      <number>15</number>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
+     <item>
+      <!-- El QFrame que contiene la imagen y el borde azul -->
+      <widget class="QFrame" name="frameImage">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutImage">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lblImageCam">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Señal de Cámara</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: white; background: transparent;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     
+     <item>
+      <!-- SECCION ROI -->
+      <widget class="QGroupBox" name="groupBoxROI">
+       <property name="title">
+        <string/>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutROI">
+        <item>
+         <widget class="QLabel" name="lblTitleROI">
+          <property name="text">
+           <string>SELECCIÓN DE ROI (Región de Interés)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QGridLayout" name="gridLayoutROI">
+          <property name="horizontalSpacing">
+           <number>10</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>15</number>
+          </property>
+          
+          <!-- P1 -->
+          <item row="0" column="0">
+           <widget class="QLabel" name="lblP1">
+            <property name="text">
+             <string>Punto P1 (X,Y)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="lblP1X">
+            <property name="text">
+             <string>X:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="spinP1_X">
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="lblP1Y">
+            <property name="text">
+             <string>Y:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QSpinBox" name="spinP1_Y">
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QPushButton" name="btnSelectP1">
+            <property name="text">
+             <string>Escoger de Imagen</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+
+          <!-- P2 -->
+          <item row="1" column="0">
+           <widget class="QLabel" name="lblP2">
+            <property name="text">
+             <string>Punto P2 (X,Y)</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="lblP2X">
+            <property name="text">
+             <string>X:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QSpinBox" name="spinP2_X">
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="lblP2Y">
+            <property name="text">
+             <string>Y:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QSpinBox" name="spinP2_Y">
+            <property name="maximum">
+             <number>9999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QPushButton" name="btnSelectP2">
+            <property name="text">
+             <string>Escoger de Imagen</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="6">
+            <spacer name="horizontalSpacerROI">
+            <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+              <size>
+              <width>40</width>
+              <height>20</height>
+              </size>
+            </property>
+            </spacer>
+          </item>
+
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+
+   <!-- Right Side -->
+   <item>
+    <widget class="QFrame" name="frameRight">
+     <layout class="QVBoxLayout" name="verticalLayoutRight">
+      <property name="spacing">
+       <number>15</number>
+      </property>
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <property name="topMargin">
+       <number>30</number>
+      </property>
+
+      <!-- Selección de Cámara -->
+      <item>
+       <widget class="QLabel" name="lblTitleCam">
+        <property name="text">
+         <string>SELECCIÓN DE CÁMARA</string>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cmbCameras"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnRefreshCameras">
+        <property name="text">
+         <string>Actualizar / Conectar</string>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <spacer name="verticalSpacer1">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+
+      <!-- Módulos de Análisis -->
+      <item>
+       <widget class="QLabel" name="lblTitleMod">
+        <property name="text">
+         <string>MÓDULOS DE ANÁLISIS
+DE IMAGEN</string>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkAnalisisAlveolar">
+        <property name="text">
+         <string>Análisis alveolar</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkColorimetria">
+        <property name="text">
+         <string>Colorimetría</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkForma">
+        <property name="text">
+         <string>Forma</string>
+        </property>
+       </widget>
+      </item>
+
+      <item>
+       <spacer name="verticalSpacer2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+
+     </layout>
     </widget>
    </item>
+
   </layout>
  </widget>
  <resources/>

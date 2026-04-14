@@ -16,13 +16,18 @@ import numpy as np
 import serial
 from PySide6.QtCore import QObject, QThread, Signal, Slot
 from PySide6.QtWidgets import QPushButton, QCheckBox, QMessageBox
+from env_config import ENV
 
 
 # ── Parámetros de configuración ────────────────────────────────────────────────
-SERIAL_PORT = "COM6"
-BAUD_RATE   = 115200
+BAUD_RATE    = 115200
 NUM_CHANNELS = 6
 WINDOW_SIZE  = 200      # Muestras visibles
+
+
+def _serial_port() -> str:
+    """Lee ARDUINO_COM_PORT del .env en tiempo de ejecución."""
+    return ENV.get("ARDUINO_COM_PORT", "COM6")
 
 # Textos del botón
 BTN_START = "Probar sensores seleccionados"
@@ -166,7 +171,7 @@ class EmgController(QObject):
                 if cb:
                     chart.set_channel_visible(i, cb.isChecked())
 
-        self._worker = SerialWorker(SERIAL_PORT, BAUD_RATE)
+        self._worker = SerialWorker(_serial_port(), BAUD_RATE)
         self._worker.data_received.connect(self._on_data_received)
         self._worker.error_occurred.connect(self._on_serial_error)
         self._worker.start()
@@ -212,3 +217,21 @@ class EmgController(QObject):
         if self.view and self.view.ui:
             return self.view.ui.findChild(widget_type, name)
         return None
+
+    @property
+    def has_selected_sensors(self) -> bool:
+        """Devuelve True si hay al menos un sensor agregado en la tabla."""
+        return len(self.view.get_sensor_list()) > 0
+
+    @property
+    def num_selected_sensors(self) -> int:
+        """Devuelve la cantidad de sensores agregados."""
+        return len(self.view.get_sensor_list())
+
+    def get_active_sensor_indices(self) -> list[int]:
+        """Devuelve la lista de índices físicos (0-based) de los sensores marcados."""
+        indices = []
+        for i, cb in enumerate(self._checkboxes):
+            if cb and cb.isChecked():
+                indices.append(i)
+        return indices

@@ -35,14 +35,20 @@ QPushButton#btnStartExperiment, QPushButton#btnPrevSection {
     color: white;
     border-radius: 10px;
     padding: 15px;
-    margin-left: 20px;
-    margin-right: 20px;
     margin-top: 5px;
     margin-bottom: 5px;
     font-family: 'Segoe UI';
     font-size: 14pt;
     font-weight: bold;
     border: none;
+}
+QPushButton#btnPrevSection {
+    margin-left: 20px;
+    margin-right: 5px;
+}
+QPushButton#btnStartExperiment {
+    margin-left: 5px;
+    margin-right: 20px;
 }
 QPushButton#btnStartExperiment:hover, QPushButton#btnPrevSection:hover {
     background-color: #2E7D32;
@@ -52,6 +58,30 @@ QPushButton#btnStartExperiment:pressed, QPushButton#btnPrevSection:pressed {
 }
 QPushButton#btnStartExperiment:disabled, QPushButton#btnPrevSection:disabled {
     background-color: #A5D6A7;
+    color: #E0E0E0;
+}
+QPushButton#btnSkipSection {
+    background-color: #FF9800;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: 'Segoe UI';
+    font-size: 14pt;
+    font-weight: bold;
+    border: none;
+}
+QPushButton#btnSkipSection:hover {
+    background-color: #F57C00;
+}
+QPushButton#btnSkipSection:pressed {
+    background-color: #E65100;
+}
+QPushButton#btnSkipSection:disabled {
+    background-color: #FFCC80;
     color: #E0E0E0;
 }</string>
   </property>
@@ -302,22 +332,39 @@ QPushButton:hover {
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="btnPrevSection">
-           <property name="cursor">
-            <cursorShape>PointingHandCursor</cursorShape>
+          <layout class="QHBoxLayout" name="horizontalLayoutNav">
+           <property name="spacing">
+            <number>5</number>
            </property>
-           <property name="text">
-            <string>Sección anterior</string>
-           </property>
-          </widget>
+           <item>
+            <widget class="QPushButton" name="btnPrevSection">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="text">
+              <string>Anterior</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnStartExperiment">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="text">
+              <string>Siguiente</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="btnStartExperiment">
+          <widget class="QPushButton" name="btnSkipSection">
            <property name="cursor">
             <cursorShape>PointingHandCursor</cursorShape>
            </property>
            <property name="text">
-            <string>Siguiente sección</string>
+            <string>Omitir sección</string>
            </property>
           </widget>
          </item>

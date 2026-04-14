@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConfigurationPage</class>
+ <widget class="QWidget" name="ConfigurationPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+    font-family: 'Segoe UI';
+    color: black;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="frameMainContainer">
+     <property name="styleSheet">
+      <string notr="true">QFrame#frameMainContainer {
+    border: 1px solid #CCCCCC;
+    background: #F5F5F5;
+    border-radius: 5px;
+}</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayoutGeneral">
+      <property name="spacing">
+       <number>15</number>
+      </property>
+      <property name="leftMargin">
+       <number>15</number>
+      </property>
+      <property name="topMargin">
+       <number>15</number>
+      </property>
+      <property name="rightMargin">
+       <number>15</number>
+      </property>
+      <property name="bottomMargin">
+       <number>15</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayoutTop">
+        <property name="spacing">
+         <number>15</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="frameAjustes">
+          <property name="styleSheet">
+           <string notr="true">QFrame#frameAjustes {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: white;
+}</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayoutAjustes">
+           <item>
+            <widget class="QLabel" name="lblAjustesTitle">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Ajustes del experimento:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupPath">
+             <property name="title">
+              <string>Selección de una carpeta para guardar los archivos:</string>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayoutPath">
+              <item>
+               <widget class="QPushButton" name="btnBrowse">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>45</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+}
+QPushButton:hover {
+    background-color: #45a049;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Examinar...</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="linePath">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>45</height>
+                 </size>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    background-color: #E0E0E0;
+    border: 1px solid #CCCCCC;
+    border-radius: 8px;
+    padding-left: 10px;
+    color: #333333;
+}</string>
+                </property>
+                <property name="text">
+                 <string>/User/Documentos/Resultados_021</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frameInfo">
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame#frameInfo {
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    background: white;
+}</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayoutInfo">
+           <item>
+            <widget class="QLabel" name="lblInfoTitle">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+               <pointsize>11</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Información del Experimento:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListWidget" name="listChecklist">
+             <property name="styleSheet">
+              <string notr="true">QListWidget {
+    background-color: #1A1A1A;
+    border-radius: 8px;
+    padding: 10px;
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 13px;
+    border: none;
+}
+QListWidget::item {
+    margin-bottom: 8px;
+}</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>✓ Consentimiento informado firmado</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>✓ Evaluación médica completada</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>✓ Prueba de audición aprobada</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>✓ Prueba de visión aprobada</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="tableUsers">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTableWidget {
+    background-color: white;
+    border: 1px solid #CCCCCC;
+    gridline-color: #CCCCCC;
+    border-radius: 5px;
+}
+QHeaderView::section {
+    background-color: #E0E0E0;
+    padding: 10px;
+    font-weight: bold;
+    border: 1px solid #CCCCCC;
+}
+QTableWidget::item {
+    padding: 5px;
+    border: 1px solid #CCCCCC;
+}</string>
+        </property>
+        <property name="rowCount">
+         <number>6</number>
+        </property>
+        <property name="columnCount">
+         <number>4</number>
+        </property>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>Usuario #</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Edad</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Género</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

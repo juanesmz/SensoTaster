@@ -1,7 +1,11 @@
 import sys
+import os
+
+# Suprimir advertencia inofensiva de Qt sobre los márgenes de Windows y la barra de tareas (QWindowsWindow::setGeometry)
+os.environ["QT_LOGGING_RULES"] = "qt.qpa.window=false"
+
 from PySide6.QtWidgets import QApplication
 from controllers.app_controller import AppController
-from config import Config
 
 def main():
     app = QApplication(sys.argv)
