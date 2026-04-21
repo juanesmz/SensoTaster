@@ -111,6 +111,22 @@ class ImagingController(QObject):
             return data if data is not None else 0
         return 0
 
+    def get_roi_coordinates(self):
+        """Devuelve ((x1, y1), (x2, y2)) o None si no están definidos."""
+        try:
+            x1 = self._spinP1_X.value()
+            y1 = self._spinP1_Y.value()
+            x2 = self._spinP2_X.value()
+            y2 = self._spinP2_Y.value()
+            
+            # Si ambos puntos son (0,0) o son iguales, asumimos que no hay ROI configurado
+            if (x1 == 0 and y1 == 0 and x2 == 0 and y2 == 0) or (x1 == x2 and y1 == y2):
+                return None
+                
+            return (x1, y1), (x2, y2)
+        except Exception:
+            return None
+
     def _connect_signals(self):
         if self._btnRefresh:
             self._btnRefresh.clicked.connect(self._toggle_or_refresh)

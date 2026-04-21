@@ -114,6 +114,46 @@ SKIP_STYLE_ORANGE = """
     QPushButton:pressed { background-color: #E65100; }
 """
 
+NEXT_STYLE_STANDARD = """
+    QPushButton {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        margin-right: 20px;
+        font-family: 'Segoe UI';
+        font-size: 14pt;
+        font-weight: bold;
+        border: none;
+    }
+    QPushButton:hover { background-color: #2E7D32; }
+    QPushButton:pressed { background-color: #1B5E20; }
+    QPushButton:disabled { background-color: #A5D6A7; color: #E0E0E0; }
+"""
+
+NEXT_STYLE_ALONE = """
+    QPushButton {
+        background-color: #4CAF50;
+        color: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 20px;
+        margin-right: 20px;
+        font-family: 'Segoe UI';
+        font-size: 14pt;
+        font-weight: bold;
+        border: none;
+    }
+    QPushButton:hover { background-color: #2E7D32; }
+    QPushButton:pressed { background-color: #1B5E20; }
+    QPushButton:disabled { background-color: #A5D6A7; color: #E0E0E0; }
+"""
+
 
 class ExperimentController(QObject):
     def __init__(self, view):
@@ -276,16 +316,28 @@ class ExperimentController(QObject):
             return
         total = len(self._section_widgets)
 
+        # ── Botón Anterior ──
+        if self._btn_prev:
+            # Ocultamos el botón si estamos en la primera sección (Limpieza)
+            self._btn_prev.setVisible(self._current_index > 0)
+
+        # ── Botón Siguiente ──
         if self._btn_next:
             if self._current_index == total - 1:
-                self._btn_next.setVisible(False)  # Hide next in configuration
+                # Ocultar en la sección de configuración
+                self._btn_next.setVisible(False)
             else:
                 self._btn_next.setVisible(True)
-                if self._current_index == total - 2:
-                    self._btn_next.setText("Siguiente")
+                self._btn_next.setText("Siguiente")
+                
+                # Si es la primera sección (Anterior oculto), expandimos el margen para que 
+                # tenga el mismo ancho que "Omitir sección"
+                if self._current_index == 0:
+                    self._btn_next.setStyleSheet(NEXT_STYLE_ALONE)
                 else:
-                    self._btn_next.setText("Siguiente")
+                    self._btn_next.setStyleSheet(NEXT_STYLE_STANDARD)
 
+        # ── Botón Omitir / Iniciar ──
         if self._btn_skip:
             if self._current_index == 5: # Configuración
                 self._btn_skip.setText("Iniciar Experimentación")
@@ -322,6 +374,30 @@ class ExperimentController(QObject):
                     self._stack.setCurrentIndex(self._current_index)
                     self._refresh_sidebar()
                     self._update_button_states()
+                return True
+        return False
+
+    def _handle_gas_skip(self) -> bool:
+        """
+        Maneja la lógica al intentar salir de la sección de Gas.
+        Si no hay una PCB seleccionada, advierte que el módulo de gases no se activará 
+        y salta a la sección de EMG.
+        """
+        from PySide6.QtWidgets import QMessageBox
+        if self._current_index == 1:
+            if not getattr(self.gas_controller, "has_selected_pcb", False):
+                QMessageBox.information(
+                    self.view,
+                    "Módulo de Gas inactivo",
+                    "No se ha seleccionado una configuración de PCB. El módulo de gases no se activará para este experimento.",
+                    QMessageBox.StandardButton.Ok
+                )
+                self._reds[1] = True
+                self._checked[1] = True
+                self._current_index = 2 # Ir a Sensores EMG
+                self._stack.setCurrentIndex(self._current_index)
+                self._refresh_sidebar()
+                self._update_button_states()
                 return True
         return False
 
@@ -406,6 +482,8 @@ class ExperimentController(QObject):
 
         if self._handle_cleaning_skip():
             return
+        if self._handle_gas_skip():
+            return
         if self._handle_emg_skip():
             return
         if self._handle_microphone_skip():
@@ -438,6 +516,8 @@ class ExperimentController(QObject):
 
         if self._handle_cleaning_skip():
             return
+        if self._handle_gas_skip():
+            return
         if self._handle_emg_skip():
             return
         if self._handle_microphone_skip():
@@ -469,6 +549,7 @@ class ExperimentController(QObject):
                 omitted_modules=self._reds,
                 user_data=self.configuration_controller.get_user_data(),
                 camera_index=self.imaging_controller.get_selected_camera_index(),
+                roi=self.imaging_controller.get_roi_coordinates(),
                 mic_list=self.microphone_controller.get_microphone_list(),
                 emg_indices=self.emg_controller.get_active_sensor_indices(),
                 gas_config=self.gas_controller.get_gas_config()
@@ -484,13 +565,20 @@ class ExperimentController(QObject):
         if self._current_index <= 0:
             return
 
-        # Si regresamos de EMG (2) y Gas (1) estaba omitido por falta de limpieza..
-        if self._current_index == 2 and self._reds[1]:
-            self._checked[1] = False
-            self._reds[1] = False
-            self._checked[0] = False
-            self._reds[0] = False
-            self._current_index = 0
+        # Si regresamos de EMG (2)
+        if self._current_index == 2:
+            # Si tanto Limpieza como Gas se omitieron (porque faltó limpieza), volver al inicio
+            if self._reds[0] and self._reds[1]:
+                self._checked[1] = False
+                self._reds[1] = False
+                self._checked[0] = False
+                self._reds[0] = False
+                self._current_index = 0
+            else:
+                # Si limpieza sí se hizo, volver normalmente a Gas (aunque se haya omitido por falta de PCB)
+                self._checked[1] = False
+                self._reds[1] = False
+                self._current_index = 1
         # Si regresamos de Cámaras (4) y Micrófonos (3) estaba omitido..
         elif self._current_index == 4 and (self._reds[3] or self._checked[3]):
             self._checked[3] = False

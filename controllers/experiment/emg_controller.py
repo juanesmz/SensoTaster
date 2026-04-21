@@ -60,25 +60,31 @@ class SerialWorker(QThread):
                             if not line:
                                 continue
 
-                            parts = line.split(', ')
-                            values = []
-                            for p in parts:
-                                try:
-                                    values.append(float(p))
-                                except ValueError:
-                                    pass
+                            # Validación estricta: 6 números enteros separados por comas
+                            parts = [p.strip() for p in line.split(',') if p.strip()]
+                            
+                            if len(parts) != NUM_CHANNELS:
+                                self.error_occurred.emit(f"Datos incompletos o inválidos: se recibieron {len(parts)} valores, pero se esperan {NUM_CHANNELS}.")
+                                break
+                            
+                            try:
+                                values = [int(p) for p in parts]
+                                self.data_received.emit(values)
+                            except ValueError:
+                                self.error_occurred.emit("Error de formato: Los datos recibidos no son números enteros válidos.")
+                                break
 
-                            if len(values) >= NUM_CHANNELS:
-                                self.data_received.emit(values[:NUM_CHANNELS])
                         except Exception as e:
-                            print(f"[EmgController] Error parseando línea: {e}")
+                            self.error_occurred.emit(f"Error durante la lectura: {str(e)}")
+                            break
                     else:
                         self.msleep(5)
 
         except serial.SerialException as e:
-            self.error_occurred.emit(str(e))
+            self.error_occurred.emit(f"No se pudo abrir el puerto serial {self.port}. Verifique la conexión física y que el puerto no esté siendo usado por otro programa.")
             print(f"[EmgController] Error Serial: {e}")
         finally:
+            self._running = False
             print("[EmgController] Conexión serial cerrada.")
 
     def stop(self):
@@ -195,8 +201,24 @@ class EmgController(QObject):
 
     @Slot(str)
     def _on_serial_error(self, error_msg):
+        """Maneja errores del hilo serial mostrando una ventana emergente."""
         print(f"[EmgController] Error crítico serial: {error_msg}")
-        self._toggle()
+        
+        # Detener la lectura si ocurre un error
+        if self._worker:
+            self.stop()
+        
+        # Actualizar el texto del botón
+        btn = self._find_widget(QPushButton, "btnTestSensor")
+        if btn:
+            btn.setText(BTN_START)
+            
+        # Mostrar ventana emergente informativa
+        QMessageBox.critical(
+            self.view,
+            "Error de Conexión EMG",
+            f"No es posible la lectura del puerto serial o los datos son inválidos.\n\nDetalle: {error_msg}"
+        )
 
     @Slot()
     def _toggle(self):

@@ -5,3 +5,4 @@ numpy==2.2.6
 labjack-ljm==1.23.0
 soundfile==0.13.1
 sounddevice==0.5.2
+pyqtgraph==0.13.7

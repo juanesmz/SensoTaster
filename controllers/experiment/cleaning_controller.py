@@ -35,6 +35,9 @@ class CleaningController(QObject):
         ui = self.view.ui
         self._input_time: QLineEdit = ui.findChild(QLineEdit, "inputTime")
         self._btn_start: QPushButton = ui.findChild(QPushButton, "btnStartCleaning")
+        self._original_btn_style = ""
+        if self._btn_start:
+            self._original_btn_style = self._btn_start.styleSheet()
 
         # ── Validar formato de entrada ─────────────────────────────
         if self._input_time:
@@ -50,7 +53,7 @@ class CleaningController(QObject):
 
         # ── Conexión del botón ─────────────────────────────────────
         if self._btn_start:
-            self._btn_start.clicked.connect(self._on_start)
+            self._btn_start.clicked.connect(self._on_btn_click)
 
     # ── Parsear tiempo ─────────────────────────────────────────────
     def _parse_time(self) -> int | None:
@@ -97,12 +100,41 @@ class CleaningController(QObject):
         # Configurar UI para cuenta regresiva
         self._remaining_seconds = total
         self._input_time.setReadOnly(True)
-        self._btn_start.setEnabled(False)
-        self._btn_start.setText("Limpiando...")
+        self._btn_start.setText("Detener limpieza")
+        # Estilo rojo manteniendo el resto de propiedades (fuente, bordes, etc.)
+        self._btn_start.setStyleSheet("""
+            QPushButton {
+                background-color: #d32f2f;
+                color: white;
+                font-size: 18px;
+                font-weight: bold;
+                border-radius: 10px;
+                padding: 8px 20px;
+                border: none;
+            }
+            QPushButton:hover {
+                background-color: #c62828;
+            }
+            QPushButton:pressed {
+                background-color: #b71c1c;
+            }
+        """)
 
         # Actualizar display y arrancar timer
         self._input_time.setText(self._format_time(self._remaining_seconds))
         self._timer.start()
+
+    def _on_btn_click(self):
+        """Maneja el clic del botón: Inicia o Detiene según el estado."""
+        if self._timer.isActive():
+            self._on_stop()
+        else:
+            self._on_start()
+
+    def _on_stop(self):
+        """Detiene manualmente el proceso de limpieza."""
+        self._timer.stop()
+        self._on_cleaning_done(stopped_manually=True)
 
     # ── Tick del timer ─────────────────────────────────────────────
     def _on_tick(self):
@@ -115,7 +147,7 @@ class CleaningController(QObject):
             self._on_cleaning_done()
 
     # ── Limpieza terminada ─────────────────────────────────────────
-    def _on_cleaning_done(self):
+    def _on_cleaning_done(self, stopped_manually=False):
         """Pone FIO0/FIO1 en bajo, cierra conexión, restaura UI."""
         self._set_fio_low()
         self._disconnect_labjack()
@@ -125,12 +157,20 @@ class CleaningController(QObject):
         self._input_time.setReadOnly(False)
         self._btn_start.setEnabled(True)
         self._btn_start.setText("Iniciar limpieza")
+        self._btn_start.setStyleSheet(self._original_btn_style) 
 
-        QMessageBox.information(
-            self.view, "Limpieza completada",
-            "El ciclo de limpieza ha terminado.\n"
-            "FIO0 y FIO1 están ahora en BAJO.",
-        )
+        if not stopped_manually:
+            QMessageBox.information(
+                self.view, "Limpieza completada",
+                "El ciclo de limpieza ha terminado.\n"
+                "FIO0 y FIO1 están ahora en BAJO.",
+            )
+        else:
+            QMessageBox.warning(
+                self.view, "Limpieza interrumpida",
+                "El proceso de limpieza fue detenido manualmente.\n"
+                "FIO0 y FIO1 han vuelto a BAJO.",
+            )
 
     # ── LabJack T7 ─────────────────────────────────────────────────
     def _connect_labjack(self) -> bool:
@@ -143,11 +183,10 @@ class CleaningController(QObject):
             print(f"LabJack T7 conectado – Serial: {info[2]}")
             return True
         except Exception as e:
-            serial_num = _labjack_serial()
             QMessageBox.critical(
                 self.view, "Error de conexión",
-                f"No se pudo conectar al LabJack T7 (serial {serial_num}).\n\n"
-                f"Error: {e}",
+                "No se pudo establecer conexión con la LabJack.\n\n"
+                "Se debe verificar la conexión y el número de serial en la sección de configuración."
             )
             self._handle = None
             return False

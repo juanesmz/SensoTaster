@@ -1,9 +1,11 @@
 import os
+import pyqtgraph as pg
 from PySide6.QtWidgets import (
     QVBoxLayout, QHBoxLayout, QWidget, QLabel, QComboBox,
-    QFrame, QScrollArea, QSizePolicy, QPushButton,
+    QFrame, QScrollArea, QSizePolicy, QPushButton, QCheckBox,
+    QGroupBox, QGridLayout
 )
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QTimer
 from views.base_view import BaseView
 
 
@@ -53,6 +55,12 @@ SENSOR_LABEL_STYLE = """
 DEFAULT_ROW_COUNT = 13
 
 
+class NoScrollComboBox(QComboBox):
+    """QComboBox que ignora el evento de la rueda del ratón para evitar cambios accidentales al scrollear."""
+    def wheelEvent(self, event):
+        event.ignore()
+
+
 class GasView(BaseView):
     sensor_deleted = Signal(str)  # emite el nombre del sensor eliminado
 
@@ -62,6 +70,104 @@ class GasView(BaseView):
         self._sensor_list_entries: list[dict] = []
         self._setup_table()
         self._setup_sensor_list()
+        self._setup_visualization_tab()
+
+    def _setup_visualization_tab(self):
+        """Inicializa los componentes de la pestaña de visualización."""
+        if not self.ui:
+            return
+
+        self.btn_start_stop = self.ui.findChild(QPushButton, "btnStartStopVis")
+        self.layout_checkboxes = self.ui.findChild(QGridLayout, "layoutSensorCheckboxes")
+        self.plot_container = self.ui.findChild(QWidget, "plotContainer")
+        self.layout_plot = self.ui.findChild(QVBoxLayout, "layoutPlot")
+
+        # Configurar pyqtgraph
+        pg.setConfigOption('background', 'w')
+        pg.setConfigOption('foreground', 'k')
+        pg.setConfigOptions(antialias=True)
+
+        self.plot_widget = pg.PlotWidget(title="Comportamiento de Sensores de Gas")
+        self.plot_widget.setLabel('left', 'Voltaje', units='V')
+        self.plot_widget.setLabel('bottom', 'Tiempo', units='s')
+        self.plot_widget.addLegend()
+        self.plot_widget.showGrid(x=True, y=True)
+        
+        if self.layout_plot:
+            self.layout_plot.addWidget(self.plot_widget)
+
+        self._curves = {}
+        self._sensor_checkboxes = {}
+
+    def update_sensor_visualization_list(self, active_sensors: list[tuple[str, str]]):
+        """
+        Crea checkboxes para los sensores que tienen una referencia asignada en una grilla de 5 columnas.
+        active_sensors: lista de (SG_N, Referencia)
+        """
+        if not self.layout_checkboxes:
+            return
+
+        # Limpiar checkboxes anteriores
+        while self.layout_checkboxes.count():
+            item = self.layout_checkboxes.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+        
+        self._sensor_checkboxes.clear()
+        
+        # Paleta de colores para las curvas
+        colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', 
+                  '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', 
+                  '#008080', '#e6beff', '#9a6324']
+
+        col_count = 2
+        active_idx = 0
+
+        for i, (sensor_id, ref) in enumerate(active_sensors):
+            if ref and ref != "N/A":
+                cb = QCheckBox(ref)
+                cb.setChecked(True)
+                cb.setStyleSheet("font-size: 11px; font-weight: bold; color: #333333;")
+                
+                row = active_idx // col_count
+                col = active_idx % col_count
+                self.layout_checkboxes.addWidget(cb, row, col)
+
+                self._sensor_checkboxes[sensor_id] = {
+                    "checkbox": cb,
+                    "color": colors[active_idx % len(colors)],
+                    "ref": ref
+                }
+                active_idx += 1
+
+    def get_selected_visualized_sensors(self) -> list[str]:
+        """Retorna los IDs de sensores (SG_N) seleccionados para visualizar."""
+        return [sid for sid, data in self._sensor_checkboxes.items() if data["checkbox"].isChecked()]
+
+    def setup_curves(self, sensor_ids: list[str]):
+        """Prepara las curvas en el gráfico para los sensores indicados."""
+        self.plot_widget.clear()
+        self._curves.clear()
+        
+        for sid in sensor_ids:
+            if sid in self._sensor_checkboxes:
+                data = self._sensor_checkboxes[sid]
+                curve = self.plot_widget.plot(
+                    pen=pg.mkPen(color=data["color"], width=2),
+                    name=f"{sid}: {data['ref']}"
+                )
+                self._curves[sid] = curve
+
+    def update_plot(self, x_data, y_map: dict[str, list[float]]):
+        """Actualiza los datos del gráfico con una ventana fija de 3 segundos."""
+        for sid, curve in self._curves.items():
+            if sid in y_map:
+                curve.setData(x_data, y_map[sid])
+        
+        if x_data:
+            # Forzar que el eje X siempre muestre los últimos 3 segundos
+            last_t = x_data[-1]
+            self.plot_widget.setXRange(last_t - 3, last_t, padding=0)
 
     # ── Tabla deslizable ───────────────────────────────────────────
     def _setup_table(self):
@@ -106,7 +212,16 @@ class GasView(BaseView):
 
         # Insertar el header antes del scroll en el layout del frame derecho
         right_layout = frame_right.layout()
-        right_layout.insertWidget(0, header)
+        
+        # Buscar el índice del título dinámico si existe
+        insert_pos = 0
+        for i in range(right_layout.count()):
+            item = right_layout.itemAt(i)
+            if item.widget() and item.widget().objectName() == "lblTableTitle":
+                insert_pos = i + 1
+                break
+                
+        right_layout.insertWidget(insert_pos, header)
 
         # ── Contenedor de filas dentro del scroll ──────────────────
         container = QWidget()
@@ -148,7 +263,7 @@ class GasView(BaseView):
         cmb_lay.setSpacing(0)
         cmb_lay.addStretch(3)
 
-        cmb = QComboBox()
+        cmb = NoScrollComboBox()
         cmb.setStyleSheet(COMBO_STYLE)
         cmb.setFixedHeight(32)
         cmb.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -169,45 +284,29 @@ class GasView(BaseView):
         self._row_widgets.append(entry)
 
     # ── API pública para el controller ─────────────────────────────
-    def add_row(self):
-        """Añade una fila nueva al final de la tabla."""
-        number = len(self._row_widgets) + 1
-        row, entry = self._create_row_widget(number)
-        # Insertar antes del stretch (último elemento del layout)
-        insert_pos = self._table_layout.count() - 1
-        self._table_layout.insertWidget(insert_pos, row)
-        self._row_widgets.append(entry)
-
-    def remove_row(self):
-        """Elimina la última fila de la tabla (mínimo 1)."""
-        if len(self._row_widgets) <= 1:
-            return
-        entry = self._row_widgets.pop()
-        self._table_layout.removeWidget(entry["widget"])
-        entry["widget"].setParent(None)
-        entry["widget"].deleteLater()
-
-    def get_row_count(self) -> int:
-        return len(self._row_widgets)
+    def count_valid_references(self) -> int:
+        """Cuenta cuántos sensores tienen una referencia válida (distinta a N/A o vacío)."""
+        count = 0
+        for entry in self._row_widgets:
+            text = entry["combo"].currentText().strip()
+            if text and text != "N/A":
+                count += 1
+        return count
 
     def get_row_data(self) -> list[tuple[str, str]]:
         """Devuelve [(SG_N, referencia), …] para todas las filas."""
         data = []
         for entry in self._row_widgets:
             sensor = entry["label"].text()
-            ref = entry["combo"].currentText() or "NA"
+            ref = entry["combo"].currentText()
             data.append((sensor, ref))
         return data
 
     def set_row_data(self, rows: list[tuple[str, str]]):
-        """Carga datos en la tabla, ajustando la cantidad de filas."""
-        # Ajustar cantidad
-        while len(self._row_widgets) < len(rows):
-            self.add_row()
-        while len(self._row_widgets) > len(rows) and len(self._row_widgets) > 1:
-            self.remove_row()
-
+        """Carga datos en la tabla (hasta el límite de filas existentes)."""
         for i, (sensor, ref) in enumerate(rows):
+            if i >= len(self._row_widgets):
+                break
             entry = self._row_widgets[i]
             entry["label"].setText(sensor)
             idx = entry["combo"].findText(ref)
@@ -221,7 +320,7 @@ class GasView(BaseView):
             current = cmb.currentText()
             cmb.blockSignals(True)
             cmb.clear()
-            cmb.addItem("")  # opción vacía
+            cmb.addItem("N/A")  # opción por defecto
             cmb.addItems(references)
             # Restaurar selección previa si existe
             idx = cmb.findText(current)

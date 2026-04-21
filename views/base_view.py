@@ -78,19 +78,31 @@ class BaseView(QWidget):
             lbl.setStyleSheet("background: transparent;")
             return lbl
 
-        # ── EUSab2: justo después del botón de retorno ─────────────
+        # ── EUSab2: después del botón de retorno o al inicio si no hay botón ──
         btn_return = self.ui.findChild(QPushButton, "btnReturn")
-        if btn_return is not None:
-            idx_btn = h_layout.indexOf(btn_return)
-            lbl_eusab = _make_logo("EUSab2.png")
-            if lbl_eusab is not None:
+        lbl_eusab = _make_logo("EUSab2.png")
+        if lbl_eusab is not None:
+            if btn_return is not None:
+                idx_btn = h_layout.indexOf(btn_return)
                 h_layout.insertWidget(idx_btn + 1, lbl_eusab)
+            else:
+                # Si no hay botón de retorno, va al principio del layout
+                h_layout.insertWidget(0, lbl_eusab)
 
-        # ── GAGPS: justo después de logo_capsab ─────────────────────
+        # ── GAGPS y CAPSAB: Ajuste de escala y orden ────────────────
         lbl_capsab = self.ui.findChild(QLabel, "lblLogoHeader")
         if lbl_capsab is not None:
+            # Forzar escalado correcto del logo que viene desde el .ui (logo_capsab.png)
+            pix = lbl_capsab.pixmap()
+            if pix and not pix.isNull():
+                scaled = pix.scaledToHeight(HEADER_LOGO_HEIGHT, Qt.TransformationMode.SmoothTransformation)
+                lbl_capsab.setPixmap(scaled)
+                lbl_capsab.setFixedSize(scaled.width(), scaled.height())
+                lbl_capsab.setScaledContents(False)
+
+            # Insertar GAGPS justo antes de CAPSAB para que queden alineados a la derecha
             idx_capsab = h_layout.indexOf(lbl_capsab)
             lbl_gagps = _make_logo("GAGPS_logo2.png")
             if lbl_gagps is not None:
-                h_layout.insertWidget(idx_capsab + 1, lbl_gagps)
+                h_layout.insertWidget(idx_capsab, lbl_gagps)
 
