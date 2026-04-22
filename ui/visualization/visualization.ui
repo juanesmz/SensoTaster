@@ -169,8 +169,8 @@ QPushButton:hover {
     background-color: #F5F5F5;
     border-bottom: 2px solid #001F5B;
 }
-QLabel {
-    color: #001F5B;
+QLabel#lblDirectory {
+    color: #000000 !important;
     font-weight: bold;
     font-size: 14px;
 }
@@ -179,6 +179,7 @@ QLineEdit {
     border: 1px solid #CCC;
     border-radius: 5px;
     background: white;
+    color: #000000 !important;
     font-size: 13px;
 }
 QPushButton#btnBrowse {
@@ -220,6 +221,28 @@ QPushButton#btnBrowse:hover {
        <widget class="QPushButton" name="btnBrowse">
         <property name="text">
          <string>Buscar...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnVisualize">
+        <property name="text">
+         <string>Visualizar</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton#btnVisualize {
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-weight: bold;
+}
+QPushButton#btnVisualize:hover {
+    background-color: #218838;
+}
+QPushButton#btnVisualize:disabled {
+    background-color: #6c757d;
+}</string>
         </property>
        </widget>
       </item>
